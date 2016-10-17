@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      var e = <?!= JSON.stringify(e) ?>;
+      google.script.run.withSuccessHandler(onSuccess).setCache(e);
+      
+      function onSuccess(url){
+        window.top.location.href = url;
+      }
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+
+
