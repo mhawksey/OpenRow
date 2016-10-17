@@ -1,4 +1,4 @@
-var KEYS = ['row', 'header', 'sheet', 'id' ];
+// var KEYS = ['row', 'header', 'sheet', 'id' ];
 
 function doGet(e) {
   var html = HtmlService.createTemplateFromFile('index');
@@ -43,8 +43,8 @@ function showRow(doc){
           } else {
             sheet.hideRow(1);
           }
-          ss.setActiveRange(sheet.getRange("B1")); // set to row one first to keep above fold
-          ss.setActiveRange(sheet.getRange("A"+cache.row));
+          doc.setActiveRange(sheet.getRange("B1")); // set to row one first to keep above fold
+          doc.setActiveRange(sheet.getRange("A"+cache.row));
         }
         PropertiesService.getUserProperties().setProperty("id", "");
       }
