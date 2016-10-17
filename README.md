@@ -5,7 +5,7 @@ To use this library:
 
 1. create a new Google Sheet
 1. Open Tools > Script editor and in the editor open Resources > Libraries 
-1. In the Find Libraries box enter the script id: `1Nv354kiKVqY46snYfk9i4yGeKLvjqWlk3c1aPgeZUjKe4vGTAaVBdnTb`
+1. In the Find Libraries box enter the script id: `11ZaVyzV5H3yp5f-MxAlY04Z6FTJ-sYbkGZKNUqu8pCVLSVofUeIZA9Oa`
 1. Select the most recent version of OpenRow and click save to close the library window
 
 Finally in the script editor add the following function:
@@ -16,7 +16,7 @@ Finally in the script editor add the following function:
 	}
 
 To open your sheet at a row for editing direct users to the following url replacing the values as indicated:
-`https://script.google.com/macros/s/AKfycby947kgJ3Urkt_9aCt08ETOir4WWQ4TkQa4P-wnc-IAJ9WU2PU/exec?id=YOUR_SHEET_ID&sheet=YOUR_SHEET_NAME&row=YOUR_ROW_NUMBER`
+`https://script.google.com/macros/s/AKfycbzG9_2mWd6x7zFf9V6PH33ORRzZWcVGi_pQs500nbs5Pbdkwy26/exec?id=YOUR_SHEET_ID&sheet=YOUR_SHEET_NAME&row=YOUR_ROW_NUMBER`
 
 Optionally if you wish to include a header row when the sheet opens use `&header=NUMBER_OF_ROWS_FOR_HEADER`
 
