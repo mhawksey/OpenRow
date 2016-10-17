@@ -6,12 +6,6 @@ function doGet(e) {
   return html.evaluate().setTitle('Opening a row...');
 }
 
-function getCache(){
-  return CacheService.getUserCache().getAll(KEYS);
-  // if CacheService breaks you can 
-  // return Properties Service.getUserProperties().getProperties();
-}
-
 function setCache(parameter){
   var values = {
      'row': parameter.row,
@@ -19,38 +13,53 @@ function setCache(parameter){
      'sheet':parameter.sheet,
      'id': parameter.id
    };
-
-  CacheService.getUserCache().putAll(values, 10); // expires in 10 seconds
-  // if CacheService breaks you can 
-  //Properties Service.getUserProperties().setProperties(values)
+  // tried CacheService but seemed unreliabe 
+  // CacheService.getUserCache().putAll(values, 10000); // expires in 10 seconds
+  PropertiesService.getUserProperties().setProperties(values)
   return "https://docs.google.com/spreadsheets/d/"+parameter.id+"/edit";
 }
 
-function showRow(ss){
-  var cache = getCache();
-  // if cache is set and id matches handle open row for editing
-  if (cache.id && cache.id === ss.getId()){
-    var sheet = ss.getSheetByName(cache.sheet);
-    if (sheet != null) {
-      if(cache.row){
-        sheet.hideRows(1, sheet.getLastRow()); // hide all the rows
-        sheet.showRows(cache.row); // show row
-        if (cache.header > 0){ // if header set show it
-          sheet.showRows(1, cache.header);
+
+function getCache_(){
+  // tried CacheService but seemed unreliabe 
+  // return CacheService.getUserCache().getAll(KEYS);
+  return PropertiesService.getUserProperties().getProperties();
+}
+
+function showRow(doc){ 
+  var cache = getCache_();
+ 
+  try {
+    // if cache is set and id matches handle open row for editing
+    if (cache.id && cache.id === doc.getId()){
+      doc.toast("Opened on row for editing...");
+      var sheet = doc.getSheetByName(cache.sheet);
+      if (sheet != null) {
+        if(cache.row){
+          sheet.hideRows(2, sheet.getLastRow()-1); // hide all the rows
+          sheet.showRows(cache.row); // show row
+          if (cache.header > 0){ // if header set show it
+            sheet.showRows(1, cache.header);
+          } else {
+            sheet.hideRow(1);
+          }
+          ss.setActiveRange(sheet.getRange("B1")); // set to row one first to keep above fold
+          ss.setActiveRange(sheet.getRange("A"+cache.row));
         }
-        ss.setActiveRange(sheet.getRange("A1")); // set to row one first to keep above fold
-        ss.setActiveRange(sheet.getRange("A"+cache.row));
+        PropertiesService.getUserProperties().setProperty("id", "");
       }
+      // tried CacheService but seemed unreliabe 
+      //CacheService.getUserCache().removeAll(KEYS)
+    } else {
+      // default to showing all rows .. bit of a hacky way of doing it
+      var sheets = doc.getSheets();
+      for(var n in sheets){
+        sheets[n].showRows(1, sheets[n].getLastRow());
+      }
+      doc.toast("Showing all rows...");
     }
-    CacheService.getUserCache().removeAll(KEYS)
-    // if CacheService breaks you can 
-    // Properties Service.getUserProperties().deleteAllProperties();
-    ss.toast("Opened on row for editting");
-  } else {
-    // default to showing all rows .. bit of a hacky way of doing it
-    var sheets = ss.getSheets();
-    for(var n in sheets){
-      sheets[n].showRows(1, sheets[n].getLastRow());
-    }
+  } catch(e) {
+    PropertiesService.getUserProperties().setProperty("id", "");
+    doc.toast("Error on " +e.lineNumber + " "+e.message);
   }
 }
