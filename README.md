@@ -1,5 +1,5 @@
 # OpenRow
-Google Script Library for Opening Google Sheet on a row for editing 
+Google Script Library for opening Google Sheet on a row for editing 
 
 To use this library: 
 
